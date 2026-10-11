@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>IT218 · Human Computer Interaction 2</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f6f7fb;--surface:#fff;--surface2:#f1f3f9;--ink:#171b2b;--muted:#636d84;--border:#e5e8f1;
+  --primary:#5b4bfb;--primary2:#8b5cf6;--ok:#0e9f6e;--okbg:#e5f8f1;--bad:#e1472b;--badbg:#fdeae6;--warn:#c17a00;
+  --r:18px;--st:env(safe-area-inset-top,0px);--sb:env(safe-area-inset-bottom,0px);
+  --shadow:0 1px 2px rgba(20,20,43,.04),0 8px 24px -8px rgba(20,20,43,.08);
+}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0b0e18;--surface:#131828;--surface2:#1a2036;--ink:#eef0fa;--muted:#9099b5;--border:#242b45;
+  --primary:#8577ff;--primary2:#a78bfa;--ok:#34d399;--okbg:#0f2a21;--bad:#ff8a70;--badbg:#2e1712;--warn:#ffbf5c;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 12px 28px -10px rgba(0,0,0,.5);
+}}
+:root[data-theme="dark"]{
+  --bg:#0b0e18;--surface:#131828;--surface2:#1a2036;--ink:#eef0fa;--muted:#9099b5;--border:#242b45;
+  --primary:#8577ff;--primary2:#a78bfa;--ok:#34d399;--okbg:#0f2a21;--bad:#ff8a70;--badbg:#2e1712;--warn:#ffbf5c;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 12px 28px -10px rgba(0,0,0,.5);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;font-family:'Inter',system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;background:var(--bg);color:var(--ink);line-height:1.6;-webkit-font-smoothing:antialiased}
+button{font:inherit;cursor:pointer;color:inherit}
+svg{width:18px;height:18px;display:block}
+@media(prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+::view-transition-old(root),::view-transition-new(root){animation-duration:.22s;animation-timing-function:cubic-bezier(.4,0,.2,1)}
+
+header{position:sticky;top:0;z-index:30;background:color-mix(in srgb,var(--surface) 88%,transparent);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid var(--border);padding:calc(var(--st) + 10px) 18px 10px}
+.bar{display:flex;align-items:center;gap:10px;max-width:980px;margin:auto}
+.brand{display:flex;align-items:center;gap:9px;background:none;border:0;padding:0;font-weight:800;font-size:1.02rem}
+.logo{width:30px;height:30px;border-radius:9px;background:linear-gradient(135deg,var(--primary),var(--primary2));display:grid;place-items:center;color:#fff;font-size:.95rem;flex-shrink:0}
+.brand .dim{color:var(--muted);font-weight:500}
+.sp{flex:1}
+.ring-wrap{display:flex;align-items:center;gap:6px;color:var(--muted);font-size:.8rem;font-weight:600}
+.ring{width:30px;height:30px;transform:rotate(-90deg)}
+.ring-bg{fill:none;stroke:var(--border);stroke-width:3}
+.ring-fg{fill:none;stroke:var(--primary);stroke-width:3;stroke-linecap:round;transition:stroke-dashoffset .5s cubic-bezier(.4,0,.2,1)}
+.icon-btn{width:38px;height:38px;border-radius:11px;border:1px solid var(--border);background:var(--surface);display:grid;place-items:center;transition:.15s}
+.icon-btn:hover{border-color:var(--primary);color:var(--primary)}
+
+main{max-width:900px;margin:auto;padding:22px 18px calc(var(--sb) + 50px)}
+.fade{animation:fadeUp .35s cubic-bezier(.16,1,.3,1) both}
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+
+.hero{position:relative;overflow:hidden;border-radius:24px;padding:36px 30px;margin-bottom:22px;color:#fff;
+  background:radial-gradient(120% 140% at 10% 0%,#7c6bfc,#5b4bfb 45%,#4433d8 100%)}
+.hero::after{content:"";position:absolute;inset:0;background:radial-gradient(60% 80% at 100% 100%,rgba(255,255,255,.18),transparent)}
+.hero h1{position:relative;margin:0 0 8px;font-size:clamp(1.5rem,4vw,2.1rem);font-weight:800;letter-spacing:-.02em}
+.hero p{position:relative;margin:0;opacity:.92;max-width:52ch}
+.chips{position:relative;display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
+.chip{background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.25);border-radius:999px;padding:5px 13px;font-size:.78rem;font-weight:600}
+
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:24px;margin-bottom:18px;box-shadow:var(--shadow)}
+.eyebrow{color:var(--primary);font-size:.72rem;font-weight:800;letter-spacing:.09em;text-transform:uppercase}
+.card h2{margin:4px 0 2px;font-size:1.35rem;font-weight:800;letter-spacing:-.01em}
+h3{font-size:.92rem;margin:20px 0 8px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.04em}
+.ilist{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:8px}
+.ilist li{display:flex;gap:10px;align-items:flex-start;font-size:.95rem}
+.ilist svg{color:var(--primary);flex-shrink:0;margin-top:3px;width:16px;height:16px}
+.box{background:var(--surface2);border-radius:14px;padding:16px 18px;font-size:.95rem}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.tag{display:inline-flex;align-items:center;gap:6px;background:var(--surface2);border-radius:8px;padding:4px 11px;font-size:.78rem;font-weight:600;color:var(--muted)}
+
+.tabs{display:flex;gap:6px;margin:4px 0 16px;overflow-x:auto}
+.tab{white-space:nowrap;border:1px solid var(--border);background:var(--surface);border-radius:999px;padding:7px 15px;font-size:.84rem;font-weight:600;color:var(--muted);transition:.15s}
+.tab.active{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+:root[data-theme="dark"] .tab.active,.hero~main .tab.active{}
+@media(prefers-color-scheme:dark){.tab.active{background:var(--primary);border-color:var(--primary);color:#fff}}
+:root[data-theme="dark"] .tab.active{background:var(--primary);border-color:var(--primary);color:#fff}
+
+.weeks{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:14px}
+.wc{text-align:left;background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:16px;display:flex;flex-direction:column;gap:8px;transition:.18s cubic-bezier(.4,0,.2,1);box-shadow:var(--shadow)}
+.wc:hover{transform:translateY(-3px);border-color:var(--primary)}
+.wc .n{display:flex;justify-content:space-between;align-items:center;font-size:.76rem;color:var(--muted);font-weight:700}
+.badge{width:22px;height:22px;border-radius:50%;background:var(--surface2);display:grid;place-items:center;color:var(--ok)}
+.wc .t{font-weight:700;font-size:.98rem;letter-spacing:-.01em}
+.wc.exam{border-left:4px solid var(--warn)}
+.wc.done{border-color:var(--ok)}
+
+.crumb{display:inline-flex;align-items:center;gap:5px;font-size:.88rem;color:var(--muted);font-weight:600;margin-bottom:14px;background:none;border:0;padding:0}
+.crumb:hover{color:var(--primary)}
+
+.qprog{display:flex;gap:6px;margin:14px 0}
+.dot{width:9px;height:9px;border-radius:50%;background:var(--border)}
+.dot.ok{background:var(--ok)}.dot.bad{background:var(--bad)}
+.q{border:1px solid var(--border);border-radius:14px;padding:16px;margin:12px 0}
+.q p{margin:0 0 10px;font-weight:700;font-size:.96rem}
+.opt{display:flex;align-items:center;gap:10px;width:100%;text-align:left;background:var(--surface);color:var(--ink);border:1px solid var(--border);border-radius:11px;padding:10px 13px;margin:6px 0;font-size:.92rem;transition:.12s}
+.opt .k{width:22px;height:22px;border-radius:7px;background:var(--surface2);display:grid;place-items:center;font-size:.72rem;font-weight:700;color:var(--muted);flex-shrink:0}
+.opt:hover:not(:disabled){border-color:var(--primary)}
+.opt:disabled{cursor:default}
+.opt.right{background:var(--okbg);border-color:var(--ok)}
+.opt.right .k{background:var(--ok);color:#fff}
+.opt.wrong{background:var(--badbg);border-color:var(--bad)}
+.opt.wrong .k{background:var(--bad);color:#fff}
+.fb{display:flex;gap:8px;font-size:.86rem;margin-top:8px;color:var(--muted);background:var(--surface2);border-radius:10px;padding:9px 11px}
+.score{font-weight:800;margin-top:12px;font-size:1rem}
+.row{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-top:14px}
+.btn{display:inline-flex;align-items:center;gap:7px;background:linear-gradient(135deg,var(--primary),var(--primary2));color:#fff;border:0;border-radius:11px;padding:11px 18px;font-weight:700;font-size:.9rem;transition:.15s;box-shadow:0 6px 16px -6px color-mix(in srgb,var(--primary) 60%,transparent)}
+.btn:active{transform:scale(.97)}
+.btn.ghost{background:var(--surface);color:var(--ink);border:1px solid var(--border);box-shadow:none}
+.btn.ok{background:var(--ok);box-shadow:none}
+
+.pager{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:20px}
+.pager a{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:14px;display:flex;flex-direction:column;gap:4px;transition:.15s;box-shadow:var(--shadow)}
+.pager a:hover{border-color:var(--primary);transform:translateY(-2px)}
+.pager .lbl{display:flex;align-items:center;gap:4px;font-size:.74rem;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:.04em}
+.pager .next .lbl{justify-content:flex-end}
+.pager .next{text-align:right;grid-column:2}
+.pager .t2{font-size:.88rem;font-weight:700}
+
+footer{color:var(--muted);font-size:.8rem;text-align:center;padding:22px 0 10px}
+@media(max-width:620px){.grid2{grid-template-columns:1fr}.ring-wrap span{display:none}.pager{grid-template-columns:1fr}.pager .next{grid-column:1}}
+</style>
+</head>
+<body>
+<header>
+  <div class="bar">
+    <button class="brand" id="home"><span class="logo">⬡</span>IT218<span class="dim">HCI 2</span></button>
+    <div class="sp"></div>
+    <div class="ring-wrap" id="ringWrap"></div>
+    <button class="icon-btn" id="lang" aria-label="Language"></button>
+    <button class="icon-btn" id="theme" aria-label="Toggle theme"></button>
+  </div>
+</header>
+<main id="app"></main>
+
+<script>
+const ICON={
+home:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/></svg>',
+sun:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>',
+moon:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1111.2 3 7 7 0 0021 12.8z"/></svg>',
+globe:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 010 18 14 14 0 010-18z"/></svg>',
+check:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>',
+dot:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="2"/></svg>',
+l:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>',
+r:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>'
+};
+
+const W=[
+{n:1,t:"Course Orientation and Advanced HCI Concepts",tl:"Orientation at Mga Konseptong Advanced sa HCI",obj:["Explain the course requirements.","Differentiate HCI 1 and HCI 2 concepts.","Describe current HCI trends."],otl:["Ipaliwanag ang mga kailangan sa kurso.","Ihambing ang HCI 1 at HCI 2.","Ilarawan ang kasalukuyang trend sa HCI."],
+ c:["HCI 1 focuses on foundations; HCI 2 focuses on building, testing, and standards-based evaluation.","Current trends include AI-driven interfaces, conversational systems, VR/AR, and multimodal input."],m:"Lecture, discussion, case analysis",act:"Pick one app you use daily and list three design decisions that help or hinder its users.",
+ q:[{q:"Which best describes the focus of HCI 2?",o:["Hardware circuit design","Building, testing, and standards-based evaluation of interactive systems","Only writing source code"],a:1,e:"HCI 2 emphasizes building, evaluating, and applying standards to interactive systems."},{q:"Which is an example of a current HCI trend?",o:["Punch cards","Conversational and AI-driven interfaces","Command-line only systems"],a:1,e:"Conversational and AI-driven interfaces are among the trends the course covers."}]},
+{n:2,t:"User Experience (UX) Fundamentals",tl:"Mga Batayan ng User Experience (UX)",obj:["Define UX principles.","Explain usability and user satisfaction.","Analyze successful UX designs."],otl:["Tukuyin ang mga prinsipyo ng UX.","Ipaliwanag ang usability at kasiyahan ng user.","Suriin ang matagumpay na disenyo ng UX."],
+ c:["UX covers everything a person feels while using a product, not only how it looks.","Usability is about how effectively, efficiently, and satisfyingly people reach their goals."],m:"Lecture, group discussion, reflection",act:"Compare two competing apps in the same category and explain which feels easier and why.",
+ q:[{q:"Usability is best described as:",o:["How expensive a product is","How effectively and efficiently users reach their goals, with satisfaction","How many features a product has"],a:1,e:"Usability covers effectiveness, efficiency, and satisfaction."},{q:"Good UX is usually:",o:["Noticeable and flashy","Clear, predictable, and low-effort","Full of hidden steps"],a:1,e:"Good UX gives clear feedback and predictable behavior with low effort."}]},
+{n:3,t:"Human-Centered Design Process",tl:"Proseso ng Human-Centered Design",obj:["Explain the HCD stages.","Identify stakeholders and users.","Apply HCD frameworks."],otl:["Ipaliwanag ang mga yugto ng HCD.","Tukuyin ang mga stakeholder at user.","Gamitin ang mga framework ng HCD."],
+ c:["The HCD cycle: understand the context, specify requirements, produce design solutions, then evaluate.","Stakeholders are anyone affected by the product; users interact with it directly."],m:"Lecture, workshop, case study",act:"Map the stakeholders for a campus problem and mark which are primary users.",
+ q:[{q:"Which is NOT a stage of the HCD cycle?",o:["Understand the context","Specify requirements","Skip evaluation"],a:2,e:"Evaluation is a core stage; the cycle ends by testing solutions."},{q:"What is the difference between a stakeholder and a user?",o:["They are the same thing","Stakeholders are affected by the product; users interact with it directly","Users are never affected"],a:1,e:"All users are stakeholders, but not all stakeholders use the product directly."}]},
+{n:4,t:"User Research Methods",tl:"Mga Paraan ng User Research",obj:["Conduct interviews.","Create surveys.","Gather user requirements."],otl:["Magsagawa ng interview.","Gumawa ng survey.","Mangalap ng user requirements."],
+ c:["Interviews reveal motivations; open questions beat leading ones.","Surveys measure patterns across many people; keep them short and unbiased."],m:"Demonstration, workshop, field activity",act:"Run three interviews and one survey on the same problem, then list five user requirements.",
+ q:[{q:"Which is a better interview question?",o:["You love this app, right?","What did you do the last time you tried to finish this task?","Don't you think the menu is confusing?"],a:1,e:"Open, non-leading questions avoid biasing the answer."},{q:"What is the main strength of a survey?",o:["Deep emotional insight from one person","Measuring patterns across many people","Observing behavior in context"],a:1,e:"Surveys are good for breadth; interviews give depth."}]},
+{n:5,t:"Prelim Examination",tl:"Prelim na Pagsusulit",ex:"July 13 – 18, 2026",obj:["Review Weeks 1 to 4."],otl:["Balikan ang Linggo 1 hanggang 4."],c:["Covers HCI foundations, UX fundamentals, the HCD process, and user research."],m:"Examination",act:"Review your research notes and HCD stage summary."},
+{n:6,t:"Persona Development and User Journey Mapping",tl:"Pagbuo ng Persona at User Journey Map",obj:["Develop user personas.","Create empathy maps.","Construct user journeys."],otl:["Bumuo ng user persona.","Gumawa ng empathy map.","Bumuo ng user journey."],
+ c:["A persona is a research-based fictional user with goals, frustrations, and context.","A journey map shows each step, touchpoint, emotion, and pain point over time."],m:"Laboratory, collaborative learning",act:"Build two personas and one journey map in Miro for the same task.",
+ q:[{q:"A persona should be based on:",o:["The designer's guesses only","Research about real users' goals and context","Random stock photos"],a:1,e:"Personas are grounded in research data."},{q:"What does a journey map show?",o:["Only the final screen","Each step, touchpoint, emotion, and pain point over time","The server architecture"],a:1,e:"Journey maps track the full experience across steps."}]},
+{n:7,t:"Information Architecture and Navigation Design",tl:"Information Architecture at Disenyo ng Navigation",obj:["Design site structures.","Develop navigation systems.","Evaluate information organization."],otl:["Magdisenyo ng istruktura ng site.","Bumuo ng sistema ng navigation.","Suriin ang organisasyon ng impormasyon."],
+ c:["Information architecture organizes content so users can find it.","Card sorting reveals how users group and label information."],m:"Lecture, hands-on exercise",act:"Run a card sort with five peers and draft a sitemap from the results.",
+ q:[{q:"What is card sorting used for?",o:["Coloring the interface","Discovering how users group and label information","Testing server speed"],a:1,e:"Card sorting shows users' mental models of content."},{q:"Good navigation should tell users:",o:["Only where the logo is","Where they are, where they can go, and how to return","Nothing, to keep it minimal"],a:1,e:"Clear navigation supports orientation and movement."}]},
+{n:8,t:"Wireframing and Low-Fidelity Prototyping",tl:"Wireframing at Low-Fidelity Prototype",obj:["Create wireframes.","Design user flows.","Develop low-fidelity prototypes."],otl:["Gumawa ng wireframe.","Magdisenyo ng user flow.","Bumuo ng low-fidelity prototype."],
+ c:["Wireframes show layout and content hierarchy without visual styling.","Low-fidelity prototypes are cheap to change, which makes them ideal for early feedback."],m:"Laboratory workshop",act:"Create a Balsamiq wireframe set of at least four screens for one task flow.",
+ q:[{q:"Why use low-fidelity prototypes early?",o:["They look finished to clients","They are cheap to change for early feedback","They replace usability testing"],a:1,e:"Low-fi prototypes make early iteration fast and inexpensive."},{q:"A user flow shows:",o:["Colors and fonts","Each screen and decision needed to complete a task","Database tables"],a:1,e:"User flows map the path through the interface."}]},
+{n:9,t:"Midterm Examination",tl:"Midterm na Pagsusulit",ex:"August 10 – 15, 2026",obj:["Review Weeks 5 to 8."],otl:["Balikan ang Linggo 5 hanggang 8."],c:["Covers personas, journey maps, information architecture, and wireframing."],m:"Examination",act:"Review your personas, sitemap, and wireframe flow."},
+{n:10,t:"High-Fidelity Prototyping using Figma",tl:"High-Fidelity Prototype gamit ang Figma",obj:["Develop interactive prototypes.","Apply visual design principles.","Build responsive interfaces."],otl:["Bumuo ng interactive na prototype.","Gamitin ang visual design principles.","Gumawa ng responsive na interface."],
+ c:["Visual hierarchy uses size, color, spacing, and contrast to guide attention.","Interactive prototypes connect screens with realistic transitions and states."],m:"Laboratory activity",act:"Turn your wireframes into a clickable Figma prototype with a reused component.",
+ q:[{q:"Visual hierarchy is created mainly by:",o:["Using as many colors as possible","Size, color, spacing, and contrast guiding attention","Making all text the same size"],a:1,e:"Hierarchy helps users know what to look at first."},{q:"A reusable component helps by:",o:["Making files larger","Keeping design consistent and faster to update","Removing the need for a grid"],a:1,e:"Components keep consistency across screens."}]},
+{n:11,t:"Usability Engineering and Evaluation Methods",tl:"Usability Engineering at mga Paraan ng Pagsusuri",obj:["Explain usability metrics.","Conduct heuristic evaluations.","Apply usability standards."],otl:["Ipaliwanag ang usability metrics.","Magsagawa ng heuristic evaluation.","Gamitin ang usability standards."],
+ c:["Core metrics: effectiveness (task success), efficiency (time or effort), and satisfaction.","Heuristic evaluation has evaluators inspect an interface against recognized usability principles."],m:"Lecture, demonstration",act:"Evaluate your prototype against Nielsen's 10 heuristics and rate each issue by severity.",
+ q:[{q:"Which is NOT a core usability metric?",o:["Effectiveness","Efficiency","Font license cost"],a:2,e:"Core metrics are effectiveness, efficiency, and satisfaction."},{q:"Heuristic evaluation is done by:",o:["Real users in a lab only","Evaluators inspecting the interface against usability principles","Automatic code compilers"],a:1,e:"Experts check the interface against heuristics."}]},
+{n:12,t:"Usability Testing and Data Collection",tl:"Usability Testing at Pangongolekta ng Datos",obj:["Plan usability tests.","Gather user feedback.","Analyze usability data."],otl:["Magplano ng usability test.","Mangalap ng feedback ng user.","Suriin ang usability data."],
+ c:["A good test has clear tasks, a realistic scenario, and a neutral facilitator.","Think-aloud protocol captures what users are thinking as they work."],m:"Laboratory testing",act:"Test your prototype with at least five participants in Maze and summarize the top three findings.",
+ q:[{q:"In think-aloud testing, the participant should:",o:["Stay silent until the end","Verbalize thoughts while completing tasks","Read the designer's notes"],a:1,e:"Think-aloud reveals reasoning as it happens."},{q:"Which makes a facilitator's behavior good?",o:["Helping users by hinting at the answer","Staying neutral and not leading the user","Explaining the design before each task"],a:1,e:"Neutral facilitation avoids biasing results."}]},
+{n:13,t:"Accessibility and Inclusive Design (WCAG & ISO 9241)",tl:"Accessibility at Inclusive Design (WCAG at ISO 9241)",obj:["Explain accessibility principles.","Evaluate accessibility issues.","Design inclusive interfaces."],otl:["Ipaliwanag ang accessibility principles.","Suriin ang accessibility issues.","Magdisenyo ng inclusive na interface."],
+ c:["WCAG is organized around four principles: Perceivable, Operable, Understandable, and Robust (POUR).","Automated tools such as Lighthouse and WAVE find many issues, but manual testing is still needed."],m:"Lecture, accessibility audit",act:"Audit your prototype with WAVE and Lighthouse, then fix at least three issues.",
+ q:[{q:"What are the four WCAG principles?",o:["POUR","SEO, CSS, HTML, JS","Fast, Cheap, Pretty, Safe"],a:0,e:"POUR stands for Perceivable, Operable, Understandable, and Robust."},{q:"Can automated tools catch every accessibility issue?",o:["Yes, always","No, manual testing is still needed","Only on mobile"],a:1,e:"Automated checkers miss many issues that need human review."}]},
+{n:14,t:"Semi-Final Examination",tl:"Semi-Final na Pagsusulit",ex:"September 14 – 19, 2026",obj:["Review Weeks 9 to 13."],otl:["Balikan ang Linggo 9 hanggang 13."],c:["Covers Figma prototyping, usability engineering, usability testing, and accessibility."],m:"Examination",act:"Review your heuristic report, test findings, and accessibility audit."},
+{n:15,t:"Mobile UX and Responsive Design",tl:"Mobile UX at Responsive Design",obj:["Design mobile interfaces.","Apply responsive techniques.","Evaluate mobile usability."],otl:["Magdisenyo ng mobile interface.","Gamitin ang responsive techniques.","Suriin ang usability sa mobile."],
+ c:["WCAG 2.2 sets a minimum target size of 24 by 24 CSS pixels for interactive controls.","Responsive layouts use flexible grids, fluid images, and breakpoints."],m:"Workshop, laboratory",act:"Adapt your prototype to phone and tablet sizes and test it on an emulator.",
+ q:[{q:"What is the WCAG 2.2 minimum target size for interactive controls?",o:["8 by 8 px","24 by 24 CSS px","100 by 100 px"],a:1,e:"WCAG 2.2 criterion 2.5.8 sets a 24 by 24 CSS px minimum, with some exceptions."},{q:"Responsive design relies on:",o:["Fixed pixel widths only","Flexible grids, fluid images, and breakpoints","Separate websites per device"],a:1,e:"Flexible layouts adapt to screen size."}]},
+{n:16,t:"Conversational UI and AI-Powered Interfaces",tl:"Conversational UI at AI-Powered na Interface",obj:["Explain conversational design.","Design chatbot interactions.","Evaluate AI interface usability."],otl:["Ipaliwanag ang conversational design.","Magdisenyo ng chatbot.","Suriin ang usability ng AI interface."],
+ c:["Good conversation design sets expectations, keeps replies short, and offers clear next steps.","AI interfaces should be transparent about being AI and give users control."],m:"Lecture, design activity",act:"Script a chatbot flow for a campus FAQ, including a failed-understanding path and a human handoff.",
+ q:[{q:"When a chatbot does not understand a user, it should:",o:["Repeat the same reply","Admit uncertainty and offer a fallback or human handoff","End the conversation"],a:1,e:"Error recovery keeps users moving toward their goal."},{q:"Good AI interfaces should:",o:["Hide that they are AI","Be transparent and give users control","Always act without asking"],a:1,e:"Transparency and user control build trust."}]},
+{n:17,t:"Emerging Technologies in HCI (VR, AR, Multimodal)",tl:"Mga Umuusbong na Teknolohiya sa HCI (VR, AR, Multimodal)",obj:["Identify emerging HCI technologies.","Evaluate VR/AR applications.","Design immersive experiences."],otl:["Tukuyin ang mga umuusbong na teknolohiya sa HCI.","Suriin ang mga aplikasyon ng VR/AR.","Magdisenyo ng immersive na karanasan."],
+ c:["VR replaces the environment; AR overlays digital content onto the real world.","Multimodal interfaces combine voice, touch, gesture, and gaze."],m:"Demonstration, project-based learning",act:"Storyboard one VR or AR interaction and list its comfort and accessibility risks.",
+ q:[{q:"AR differs from VR because AR:",o:["Fully replaces the real world","Overlays digital content onto the real world","Needs no device at all"],a:1,e:"AR adds digital layers to what the user already sees."},{q:"A multimodal interface combines:",o:["Only one input type","Several inputs such as voice, touch, and gesture","Printed paper and keyboards"],a:1,e:"Multimodal means more than one input channel."}]},
+{n:18,t:"Final Examination and UX Portfolio",tl:"Final na Pagsusulit at UX Portfolio",ex:"October 10 – 15, 2026",obj:["Review the full course.","Present and defend UX decisions with evidence.","Assemble a complete UX portfolio."],otl:["Balikan ang buong kurso.","Ipresenta at ipagtanggol ang mga desisyon sa UX gamit ang ebidensya.","Buuin ang kumpletong UX portfolio."],
+ c:["Portfolio: research, personas, journey maps, IA, prototypes, test results, and accessibility audit.","Defend each decision by pointing to user evidence, not personal taste."],m:"Examination and project presentation",act:"Prepare a short walkthrough linking one research insight to one design change and its test result."}
+];
+
+const T={en:{back:"All weeks",weeks:"Course weeks",objectives:"Learning objectives",concepts:"Key concepts",activity:"Lab / class activity",method:"Method",quiz:"Quick check",next:"Next",prev:"Previous",done:"Mark as complete",completed:"Completed",score:"Score",retry:"Retry quiz",exam:"Examination",overview:"Course overview",outcomes:"Learning outcomes",assess:"Assessment",lessons:"done",tools:"Lab toolkit",feedback:"Explanation",all:"All",lessonsTab:"Lessons",exams:"Exams",completedTab:"Completed"},
+fil:{back:"Lahat ng linggo",weeks:"Mga linggo ng kurso",objectives:"Mga layunin sa pagkatuto",concepts:"Mga pangunahing konsepto",activity:"Gawain sa lab / klase",method:"Pamamaraan",quiz:"Mabilis na pagsusuri",next:"Susunod",prev:"Nakaraan",done:"Markahang tapos",completed:"Tapos na",score:"Iskor",retry:"Ulitin",exam:"Pagsusulit",overview:"Pangkalahatang-ideya",outcomes:"Mga layunin ng kurso",assess:"Pagtatasa",lessons:"tapos",tools:"Mga tool sa lab",feedback:"Paliwanag",all:"Lahat",lessonsTab:"Aralin",exams:"Pagsusulit",completedTab:"Tapos na"}};
+
+const OUT=["Apply advanced user-centered design principles.","Conduct user research and usability evaluations.","Design accessible, inclusive interfaces meeting international standards.","Build low- and high-fidelity prototypes for web and mobile.","Evaluate UX using quantitative and qualitative techniques.","Integrate emerging HCI technologies.","Present and defend UX decisions with evidence.","Complete a professional UX portfolio project."];
+const OUT_FIL=["Ilapat ang advanced na user-centered design principles.","Magsagawa ng user research at usability evaluation.","Magdisenyo ng accessible at inclusive na interface.","Gumawa ng low- at high-fidelity prototype para sa web at mobile.","Suriin ang UX gamit ang quantitative at qualitative na paraan.","Isama ang mga umuusbong na teknolohiya sa HCI.","Ipresenta at ipagtanggol ang mga desisyon sa UX gamit ang ebidensya.","Kumpletuhin ang propesyonal na UX portfolio project."];
+
+const KEY="it218-v3";
+let S={lang:"en",done:[],quiz:{},filter:"all"};
+try{Object.assign(S,JSON.parse(localStorage.getItem(KEY)||"{}"))}catch(e){}
+const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}};
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const L=()=>T[S.lang];
+const title=w=>S.lang==="fil"?w.tl:w.t;
+const objs=w=>S.lang==="fil"?w.otl:w.obj;
+const lessons=W.filter(w=>!w.ex);
+const isDone=n=>S.done.includes(n);
+
+function ring(pct){const r=12,c=2*Math.PI*r,off=c-(pct/100)*c;
+  return `<svg class="ring" viewBox="0 0 30 30"><circle cx="15" cy="15" r="${r}" class="ring-bg"/><circle cx="15" cy="15" r="${r}" class="ring-fg" style="stroke-dasharray:${c};stroke-dashoffset:${off}"/></svg>`;}
+
+function updateHeader(){
+  const pct=Math.round(S.done.filter(n=>!W[n-1].ex).length/lessons.length*100);
+  document.getElementById("ringWrap").innerHTML=`${ring(pct)}<span>${pct}%</span>`;
+  document.getElementById("lang").innerHTML=ICON.globe;
+  const dark=document.documentElement.dataset.theme==="dark"||(!document.documentElement.dataset.theme&&matchMedia("(prefers-color-scheme: dark)").matches);
+  document.getElementById("theme").innerHTML=dark?ICON.sun:ICON.moon;
+}
+
+function home(){
+  const tools=["Figma","Adobe XD","Balsamiq","Miro","Maze","Google Forms","VS Code","HTML/CSS/JS","React","Lighthouse","WAVE","AI design assistants","Unity (optional)"];
+  const f=S.filter;
+  const list=W.filter(w=>f==="all"?true:f==="exam"?w.ex:f==="done"?isDone(w.n):!w.ex);
+  return `
+  <section class="hero fade"><h1>Human Computer Interaction 2</h1>
+    <p>${S.lang==="fil"?"Magdisenyo, bumuo, at suriin ang mga interactive na sistema gamit ang user-centered design.":"Design, build, and evaluate interactive systems using user-centered design principles."}</p>
+    <div class="chips"><span class="chip">3 Units</span><span class="chip">18 Weeks</span><span class="chip">2h Lecture + 3h Lab</span><span class="chip">Blended</span><span class="chip">Prereq: IT218</span></div></section>
+  <section class="card fade"><div class="eyebrow">${L().overview}</div>
+    <h2>${L().outcomes}</h2>
+    <ul class="ilist">${(S.lang==="fil"?OUT_FIL:OUT).map(x=>`<li>${ICON.check}<span>${esc(x)}</span></li>`).join("")}</ul>
+    <div class="grid2" style="margin-top:16px">
+      <div class="box"><h3 style="margin-top:0">${L().assess}</h3><ul class="ilist"><li>${ICON.dot}Quizzes: 30%</li><li>${ICON.dot}Class standing: 30%</li><li>${ICON.dot}Major examination: 40%</li></ul></div>
+      <div class="box"><h3 style="margin-top:0">${L().tools}</h3><p style="margin:0;font-size:.9rem">${tools.join(" · ")}</p></div>
+    </div></section>
+  <h2 style="margin:4px 0 2px;font-size:1.15rem">${L().weeks}</h2>
+  <div class="tabs">
+    <button class="tab ${f==='all'?'active':''}" onclick="setFilter('all')">${L().all}</button>
+    <button class="tab ${f==='lesson'?'active':''}" onclick="setFilter('lesson')">${L().lessonsTab}</button>
+    <button class="tab ${f==='exam'?'active':''}" onclick="setFilter('exam')">${L().exams}</button>
+    <button class="tab ${f==='done'?'active':''}" onclick="setFilter('done')">${L().completedTab}</button>
+  </div>
+  <div class="weeks fade">${list.map(w=>`
+    <button class="wc ${w.ex?'exam':''} ${isDone(w.n)?'done':''}" onclick="go(${w.n})">
+      <div class="n"><span>${w.ex?L().exam:"Week "+w.n}</span>${isDone(w.n)?`<span class="badge">${ICON.check}</span>`:""}</div>
+      <div class="t">${esc(title(w))}</div>
+      ${w.ex?`<span class="tag">${esc(w.ex)}</span>`:""}
+    </button>`).join("")}</div>
+  <footer>Prepared by Dr. Caniedo · Updated September 2026</footer>`;
+}
+
+function setFilter(f){S.filter=f;save();render();}
+
+function quizBlock(w){
+  const st=S.quiz[w.n]||{answers:{},passed:false};
+  const dots=w.q.map((q,i)=>{const p=st.answers[i];const cls=p===undefined?"":p===q.a?"ok":"bad";return `<span class="dot ${cls}"></span>`;}).join("");
+  const qs=w.q.map((q,i)=>{
+    const picked=st.answers[i],answered=picked!==undefined,letters=["A","B","C","D"];
+    return `<div class="q"><p>${i+1}. ${esc(q.q)}</p>
+      ${q.o.map((o,j)=>{let cls="";if(answered){if(j===q.a)cls="right";else if(j===picked)cls="wrong";}
+        return `<button class="opt ${cls}" ${answered?"disabled":""} onclick="answer(${w.n},${i},${j})"><span class="k">${letters[j]}</span>${esc(o)}</button>`;}).join("")}
+      ${answered?`<div class="fb">${ICON.check}<span><b>${L().feedback}:</b> ${esc(q.e)}</span></div>`:""}
+    </div>`;}).join("");
+  const allAnswered=Object.keys(st.answers).length===w.q.length;
+  const score=Object.keys(st.answers).filter(i=>st.answers[i]===w.q[i].a).length;
+  return `<h3>${L().quiz}</h3><div class="qprog">${dots}</div>${qs}
+    ${allAnswered?`<div class="score">${L().score}: ${score}/${w.q.length}${score===w.q.length?" 🎉":""}</div>
+    <div class="row"><button class="btn ghost" onclick="retry(${w.n})">${L().retry}</button></div>`:""}`;
+}
+
+function answer(n,i,j){
+  const w=W[n-1],st=S.quiz[n]||(S.quiz[n]={answers:{},passed:false});
+  if(st.answers[i]!==undefined)return;
+  st.answers[i]=j;
+  if(Object.keys(st.answers).length===w.q.length){const sc=Object.keys(st.answers).filter(k=>st.answers[k]===w.q[k].a).length;st.passed=sc>=Math.ceil(w.q.length*0.5);}
+  save();render();
+}
+function retry(n){S.quiz[n]={answers:{},passed:false};save();render();}
+
+function lesson(n){
+  const w=W[n-1],prev=W[n-2],next=W[n];
+  const list=a=>`<ul class="ilist">${a.map(x=>`<li>${ICON.check}<span>${esc(x)}</span></li>`).join("")}</ul>`;
+  return `
+  <button class="crumb" onclick="go(0)">${ICON.l}${L().back}</button>
+  <section class="card fade">
+    <div class="eyebrow">${w.ex?L().exam:"Week "+w.n}${w.ex?" · "+esc(w.ex):""}</div>
+    <h2>${esc(title(w))}</h2>
+    <div style="margin:8px 0"><span class="tag">${L().method}: ${esc(w.m)}</span></div>
+    <h3>${L().objectives}</h3>${list(objs(w))}
+    <h3>${L().concepts}</h3>${list(w.c)}
+    <h3>${L().activity}</h3><div class="box">${esc(w.act)}</div>
+    ${w.ex?"":quizBlock(w)}
+    ${w.ex?"":`<div class="row"><button class="btn ${isDone(n)?'ghost':'ok'}" onclick="toggleDone(${n})">${ICON.check}${isDone(n)?L().completed:L().done}</button></div>`}
+  </section>
+  <div class="pager fade">
+    ${prev?`<a class="prev" href="#/week/${prev.n}"><span class="lbl">${ICON.l}${L().prev}</span><span class="t2">${esc(title(prev))}</span></a>`:"<span></span>"}
+    ${next?`<a class="next" href="#/week/${next.n}"><span class="lbl">${L().next}${ICON.r}</span><span class="t2">${esc(title(next))}</span></a>`:"<span></span>"}
+  </div>`;
+}
+
+function toggleDone(n){S.done=isDone(n)?S.done.filter(x=>x!==n):[...S.done,n];save();render();}
+
+function doRender(resetScroll){
+  const h=location.hash.match(/#\/week\/(\d+)/);
+  document.getElementById("app").innerHTML = h && W[+h[1]-1] ? lesson(+h[1]) : home();
+  document.documentElement.lang = S.lang==="fil"?"fil":"en";
+  updateHeader();
+  if(resetScroll) window.scrollTo({top:0,behavior:"instant"});
+}
+function render(nav){
+  if(nav && document.startViewTransition){ document.startViewTransition(()=>doRender(true)); }
+  else { doRender(!!nav); }
+}
+
+function go(n){ location.hash = n? `#/week/${n}` : "#/"; }
+
+document.getElementById("home").onclick=()=>go(0);
+document.getElementById("lang").onclick=()=>{S.lang=S.lang==="en"?"fil":"en";save();render();};
+document.getElementById("theme").onclick=()=>{
+  const r=document.documentElement;
+  const dark=r.dataset.theme==="dark"||(!r.dataset.theme&&matchMedia("(prefers-color-scheme: dark)").matches);
+  r.dataset.theme=dark?"light":"dark";
+  updateHeader();
+};
+window.addEventListener("hashchange",()=>render(true));
+render(true);
+</script>
+</body>
+</html>
